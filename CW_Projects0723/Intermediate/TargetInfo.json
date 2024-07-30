@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "CW_Projects0723",
+			"Path": "..\\Source\\CW_Projects0723.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "CW_Projects0723Editor",
+			"Path": "..\\Source\\CW_Projects0723Editor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
