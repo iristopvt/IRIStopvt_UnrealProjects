@@ -27,11 +27,11 @@ AMyGameModeBase::AMyGameModeBase()
 
 void AMyGameModeBase::BeginPlay()
 {
-	// ¸ó½ºÅÍ ½ºÆù À§Ä¡
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
 	FVector location = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation()+ FVector(100,0.0f,0.0f);
 	FRotator rotator = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorRotation();
 
-	// ¹Ýº¹¹®À¸·Î ½ºÆùÇÒ ¸¶¸®¼ö Á¤ÇÔ
+	// ï¿½Ýºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	for (int i = 0; i < 3; i++)
 	{
 		location.X += 100.0 * i;

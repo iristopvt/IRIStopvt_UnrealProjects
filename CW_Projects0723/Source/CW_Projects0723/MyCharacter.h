@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "MyStatComponent.h"
+
 #include "MyCharacter.generated.h"
 
 class UInputComponent;
@@ -11,9 +13,6 @@ class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
 
-DECLARE_DELEGATE(DelegateTest1)
-DECLARE_DELEGATE_OneParam(DElegateTEestOneParam, int32);
-DECLARE_DELEGATE_TwoParams(DElegateTEestTwoParams, int32 hp,int32 mp);
 
 
 UCLASS()
@@ -47,15 +46,8 @@ public:
 	UFUNCTION()
 	void Attackhit();
 
-	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	int MaxHP;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	int CurHP;*/
-	
-	//stat °ü·Ã
-	void AddAttackDamage(AActor* actor, int amount) { _attackDamage += amount; }
-	int GetCurHp() { return _curHp; }
+	int GetCurHp() { return _statCom->GetCurHp(); }
+	void AddAttackDamage(AActor* actor, int amount);
 
 	//Items
 	void AddItem(class AMyItem* item);
@@ -70,7 +62,8 @@ protected:
 
 	void Drop(const FInputActionValue& Value);
 	void Init();
-	//UFUNCTION();
+
+	UFUNCTION()
 	void Disable();
 	
 public:
@@ -88,7 +81,7 @@ public:
 	UInputAction* _attackAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* _itemDrop;
+	UInputAction* _itemDropAction;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	bool _isAttacking = false; // 
@@ -113,27 +106,26 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* _camera;
 
+	// Stat
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stat, meta = (AllowPrivateAccess = "true"))
+	int32 _level = 1;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
+	class UMyStatComponent* _statCom;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
+	class UMyInvenComponent* _item;
+
 	//UFUNCTION()
-	TArray<class AMyItem*> Inven;
-	void InvenAdd(AMyItem* Item);
-	void ItempDrop();
+	//TArray<class AMyItem*> Inven;
+	//void InvenAdd(AMyItem* Item);
+	//void ItempDrop();
 
 protected:
-	// Ä³¸¯ÅÍ Ã¼·Â °ü·Ã
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
-	int32 _curHp = 0;
+	// Ä³ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
-	int32 _maxHp = 300;
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
-	int32 _attackDamage = 150;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Items, meta = (AllowPrivateAccess = "true"))
-	TArray<AActor*> _itrms;
 	
 
-	//DelegateTest1 _myDelegate1; µ¨¸®°ÔÀÌÆ® 
+	//DelegateTest1 _myDelegate1; ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® 
 	//DElegateTEestOneParam _myDelegate2;
 	//DElegateTEestTwoParams _myDelegate3;
 

@@ -60,10 +60,9 @@ void AMyItem::OnMyCharacteroverlap(UPrimitiveComponent* OverlappedComponent, AAc
 		// myCharacter->_attackDamage += 10;
 		myCharacter->AddAttackDamage(this,50);
 		UE_LOG(LogTemp, Warning, TEXT("Damage UP!!"));
-		//myCharacter->Inven.Add(otherActor);
-		myCharacter->InvenAdd(this);
-		//SetActorHiddenInGame(true);
-		//SetActorEnableCollision(false);
+		myCharacter->AddItem(this);
+		// myCharacter->InvenAdd(this);
+		
 		Disable();
 	}
 }
@@ -86,4 +85,12 @@ void AMyItem::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
+void AMyItem::SetItemPos(FVector pos, FRotator rot)
+{
+	Init();
+	SetActorLocation(pos);
+	SetActorRotation(rot);
+}
+
 

@@ -23,12 +23,14 @@ protected:
 	UFUNCTION()
 	void OnMyCharacteroverlap(UPrimitiveComponent* OverlappedComponent,AActor* otherActor, UPrimitiveComponent* otherComp, int32 otherBodyIndex, bool BFromWeep, const FHitResult& SweepResult );
 
-	void Init();
-	void Disable();
 public:	
+	void Disable();
+	void Init();
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
+	void SetItemPos(FVector pos, FRotator rot = FRotator::ZeroRotator);
+
 	UPROPERTY(VisibleAnywhere)
 	class UStaticMeshComponent* _meshComponent;
 

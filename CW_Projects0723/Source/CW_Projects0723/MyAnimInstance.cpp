@@ -27,7 +27,7 @@ UMyAnimInstance::UMyAnimInstance()
 
 void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconde)
 {
-	// ÂðÂ¥ Áß¿ä              ´ÙÀÌ³ª¹Í Ä³½ºÆ®(dynamic cast)
+	// ï¿½ï¿½Â¥ ï¿½ß¿ï¿½              ï¿½ï¿½ï¿½Ì³ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½Æ®(dynamic cast)
 	AMyCharacter* myCharacter = Cast<AMyCharacter>(TryGetPawnOwner());
 	if (myCharacter != nullptr)
 	{
@@ -48,7 +48,7 @@ void UMyAnimInstance::PlayAttackMontage()
 
 		AMyCharacter* myCharacter = Cast<AMyCharacter>(TryGetPawnOwner());
 		
-		// ±¸µ¶½ÅÃ»À» ÇÑ´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ ï¿½Ñ´ï¿½.
 		//myCharacter->_myDelegate1.BindUObject(this, &UMyAnimInstance::DelegateTest);
 		//myCharacter->_myDelegate3.BindUObject(this, &UMyAnimInstance::DelegateTest2);
 		
@@ -87,8 +87,8 @@ void UMyAnimInstance::JumpToSection(int32 sectionIndex)
 
 void UMyAnimInstance::AnimNotify_Attackhit()
 {
-	// °ø°Ý ½ÃÁ¡
-	// ÀÌ ÇÔ¼ö¿¡¼­ Ä³¸¯ÅÍµéÀÇ Ãæµ¹Ã¼ µîÀå È¤Àº »ç¿îµå°¡ Ãâ·Â
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ ï¿½æµ¹Ã¼ ï¿½ï¿½ï¿½ï¿½ È¤ï¿½ï¿½ ï¿½ï¿½ï¿½å°¡ ï¿½ï¿½ï¿½
 	//UE_LOG(LogTemp, Warning, TEXT("Attack!!"));
 	_attackDelegate.Broadcast();
 }

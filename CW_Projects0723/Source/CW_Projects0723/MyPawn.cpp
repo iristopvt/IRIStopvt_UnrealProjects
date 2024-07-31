@@ -44,7 +44,7 @@ void AMyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	
-	// ´ë¸®ÀÚ : ÇÔ¼ö Æ÷ÀÎÅÍ, ÇÔ¼ö °´Ã¼ -> CallAble, ÄÝ¹éÇÔ¼ö
+	// ï¿½ë¸®ï¿½ï¿½ : ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Ô¼ï¿½ ï¿½ï¿½Ã¼ -> CallAble, ï¿½Ý¹ï¿½ï¿½Ô¼ï¿½
 //	PlayerInputComponent->BindAxis(TEXT("UpDown"), this, &AMyPawn::UpDown);
 //	PlayerInputComponent->BindAxis(TEXT("RightLeft"), this, &AMyPawn::RightLeft);
 

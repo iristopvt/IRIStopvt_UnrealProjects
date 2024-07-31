@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\CW_Projects0723.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\CW_Projects0723.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\CW_Projects0723Editor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\.vsconfig" />
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\CW_Projects0723">
+      <UniqueIdentifier>{50E3D699-E3E0-34A5-AE8A-AFA009BD98AF}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\CW_Projects0723\CW_Projects0723.Build.cs">
+      <Filter>Source\CW_Projects0723</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\CW_Projects0723\CW_Projects0723.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\CW_Projects0723.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyActor.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyActor.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyAnimInstance.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyAnimInstance.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyCharacter.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyCharacter.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyGameInstance.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyGameInstance.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyGameModeBase.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyGameModeBase.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyInvenComponent.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyInvenComponent.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyItem.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyItem.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyPawn.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyPawn.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyPlayerController.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyPlayerController.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyStatComponent.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyStatComponent.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

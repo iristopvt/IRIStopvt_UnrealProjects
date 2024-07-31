@@ -20,7 +20,7 @@ public:
 	UPROPERTY()
 	UClass* _monsterClass;
 	
-	//TArray´Â ¾ð¸®¾ó¿¡¼­ vector 
+	//TArrayï¿½ï¿½ ï¿½ð¸®¾ó¿¡¼ï¿½ vector 
 	UPROPERTY()
 	TArray<class AMyCharacter*> _monster;
 };

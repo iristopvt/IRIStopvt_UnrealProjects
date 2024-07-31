@@ -12,6 +12,9 @@
 #include "MyAnimInstance.h"
 #include "Engine/DamageEvents.h"
 #include "MyItem.h"
+#include "Math/UnrealMath.h"
+#include "MyStatComponent.h"
+#include "MyInvenComponent.h"
 
 // Sets default values
 
@@ -35,15 +38,16 @@ AMyCharacter::AMyCharacter()
 	_springArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	_camera = CreateDefaultSubobject< UCameraComponent>(TEXT("Camera"));
 
-	// »ó¼Ó°ü°è ¼³Á¤ 
 	_springArm->SetupAttachment(GetCapsuleComponent());
 	_camera->SetupAttachment(_springArm);
 
 	_springArm->TargetArmLength = 500.0f;
 	_springArm->SetRelativeRotation(FRotator(-35.0f, 0.0f, 0.0f));
 
-	/*MaxHP = 100;
-	CurHP = MaxHP;*/
+	//stat
+	_statCom = CreateDefaultSubobject< UMyStatComponent>(TEXT("Stat"));
+	_item = CreateDefaultSubobject<UMyInvenComponent>(TEXT("Inven"));
+	
 }
 
 // Called when the game starts or when spawned
@@ -59,7 +63,6 @@ void AMyCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	_animInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
-	// ¸ùÅ¸ÁÖ°¡ ³¡³¯ ¶§ _isAttack À» false·Î ¸¸µé¾îÁáÀ¸¸é ÁÁ°Ú´Ù.
 	if(_animInstance->IsValidLowLevelFast())
 	{ 
 	_animInstance->OnMontageEnded.AddDynamic(this, &AMyCharacter::OnAttackEnded);
@@ -67,6 +70,7 @@ void AMyCharacter::PostInitializeComponents()
 	_animInstance->_deathDelegate.AddUObject(this, &AMyCharacter::Disable);
 	}
 	
+	_statCom->SetLevellAndInit(_level);
 }
 
 // Called every frame
@@ -74,14 +78,6 @@ void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//_myDelegate3.ExecuteIfBound(50,30);
-	// hp: 50, mp : 30
-	//_myDelegate2.Execute();
-
-	// Å¬·¡½º °´Ã¼·Î Á÷Á¢ ÇÔ¼ö È£Ãâ 
-	/*auto myAnimI = GetMesh()->GetAnimInstance();
-	Cast<UMyAnimInstance>(myAnimI)->DelegateTest2(50, 30);*/
-	// ´ÜÁ¡ Å¬·¡½º°£ÀÇ °áÇÕµµ°¡ ³ô¾ÆÁü 
 }
 
 // Called to bind functionality to input
@@ -104,7 +100,7 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		EnhancedInputComponent->BindAction(_attackAction, ETriggerEvent::Started, this, &AMyCharacter::AttackA);
 		
 		// chuck
-		EnhancedInputComponent->BindAction(_itemDrop, ETriggerEvent::Triggered, this, &AMyCharacter::Drop);
+		EnhancedInputComponent->BindAction(_itemDropAction, ETriggerEvent::Triggered, this, &AMyCharacter::DropItem);
 
 	}
 }
@@ -113,55 +109,26 @@ float AMyCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AC
 {
 
 	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
-	// TODO 
-	// 1.  hp -= Damage
-	// 2. °ø°ÝÀÚ ÀÌ¸§ Ãâ·Â
-	// TODO 
-	//FDamageEvent DamageEvent;
-	_curHp -= Damage;
-	UE_LOG(LogTemp, Log, TEXT("Attack : %s, CurHp :%d"), *DamageCauser->GetName(), _curHp);
-	if (_curHp <= 0)
+	
+	float damaged = _statCom->AddCurHp(-Damage);
+	if (_statCom->IsDead())
 	{
-		_curHp = 0;
-		/*_animInstance->PlayDeath();*/
-		//_isAttacking = true;  
-		
-		//SetLifeSpan(5.0f);
-		
-			ItempDrop();
-		
-		
+		if(_item != nullptr)
+			_item->AllDropItem();
+
 	}
-	return _curHp;
-
-	//int Damgea = Damage; // ³»°¡ÇÑºÎºÐ
-	//CurHP -= Damgea;
-	//UE_LOG(LogTemp, Warning, TEXT("Hit Acttor NAME: %s Damage: %d"), *GetName(), Damgea);
-	//
-
-	//if (CurHP <= 0)
-	//{
-	//	CurHP = 0;
-	//	UE_LOG(LogTemp, Warning, TEXT("%s is dead"), *GetName());
-	//	Destroy();
-	//}
-
-	//return Damgea;
+	
+	return damaged;
 }
 
 void AMyCharacter::OnAttackEnded(UAnimMontage* Montage, bool bInterrupted)
 {
-	//UE_LOG(LogTemp, Error, TEXT("Attack!! END!!"));
 	_isAttacking = false;
 }
 
 void AMyCharacter::Attackhit()
 {
-	//auto* AnimI = GetMesh()->GetAnimInstance();
-	//Cast<UMyAnimInstance>(AnimI)->AnimNotify_Attackhit();
-	// TODO : Attack  Ãæµ¹Ã³¸®
-	// 1. È÷Æ®½ºÄµÀ¸·Î °ø°ÝÇÏ±â, AttackRange´Â º»ÀÎ ¸¶À½´ë·Î
-	// 2. DebugDraw ±îÁö
+	
 	FHitResult hitResult;
 	FCollisionQueryParams params(NAME_None, false, this);
 
@@ -189,18 +156,18 @@ void AMyCharacter::Attackhit()
 	{
 		drawColor = FColor::Red;
 
-		// TODO : TakeDamage
 		FDamageEvent DamageEvent;
-		hitResult.GetActor()->TakeDamage(_attackDamage, DamageEvent, GetController(), this);
-		//TakeDamage(10.0f, , )
-		//UE_LOG(LogTemp, Warning, TEXT("Hit Acttor NAME: %s"), hitResult.GetActor->GetName());
+		hitResult.GetActor()->TakeDamage(_statCom->GetAttackDamage(), DamageEvent, GetController(), this);
 		
-		// ³»°¡ÇÑºÎºÐ
-		//FDamageEvent DamageEvent;
-		//hitResult.GetActor()->TakeDamage(20, DamageEvent, GetController(), this);
 	}
 
 	DrawDebugSphere(GetWorld(), center, attackRadius, 12, drawColor, false, 2.0f);
+}
+
+void AMyCharacter::AddAttackDamage(AActor* actor, int amount)
+{
+	//ActorëŠ” ë‚˜ì˜ ê³µê²©ë ¥ì„ ë²„í”„í•´ì¤€ ëŒ€ìƒ 
+	_statCom->AddAttackDamage(amount);;
 }
 
 
@@ -208,17 +175,18 @@ void AMyCharacter::Attackhit()
 
 void AMyCharacter::AddItem(AMyItem* item)
 {
-
 	// Add
-
-
+	if(_item != nullptr)
+		_item->AddInven(item);
+	//UE_LOG(LogTemp, Log, TEXT("ItemSize : %d"), _item->_inven.Num());
 }
 
 void AMyCharacter::DropItem()
 {
 	//Drop
-
-
+	if(_item != nullptr)
+		_item->DropItem();
+	
 }
 
 void AMyCharacter::Move(const FInputActionValue& Value)
@@ -285,6 +253,7 @@ void AMyCharacter::Death(const FInputActionValue& Value)
 	if (isPressed && _isAttacking == false && _animInstance != nullptr)
 	{
 		_animInstance->PlayDeath();
+	
 		_isAttacking = true;
 	}
 }
@@ -294,21 +263,14 @@ void AMyCharacter::Drop(const FInputActionValue& Value)
 	bool isPressed = Value.Get<bool>();
 	if (isPressed)
 	{
-		//RemoveFromInventory(ItemDrop);
-		
-		
-		ItempDrop();
-		 
-		/*	ItemToDrop->SetActorLocation(DropLocation);*/
-		//ItemDrop->SetActorHiddenInGame(false);
-		//ItemDrop->SetActorEnableCollision(true);
+		DropItem();
 	}
 
 }
 
 void AMyCharacter::Init()
 {
-	_curHp = _maxHp;
+	_statCom->Reset();
 	SetActorHiddenInGame(false);
 	SetActorEnableCollision(true);
 	PrimaryActorTick.bCanEverTick = true;
@@ -317,60 +279,10 @@ void AMyCharacter::Init()
 
 void AMyCharacter::Disable()
 {
-	// ºñÈ°¼ºÈ­ 
+	// ï¿½ï¿½È°ï¿½ï¿½È­ 
 	SetActorHiddenInGame(true); 
 	SetActorEnableCollision(false);
 	PrimaryActorTick.bCanEverTick = false;
 
 }
 
-void AMyCharacter::InvenAdd(AMyItem* Item)
-{
-	if (Item && !Inven.Contains(Item))
-	{
-		Inven.Add(Item);
-	}
-
-}
-
-void AMyCharacter::ItempDrop()
-{
-	if (Inven.Num() > 0)
-	{
-		/*AMyItem* ItemDrop = Inven.Last();
-		Inven.Remove(ItemDrop);
-		
-		FVector DropLocation = GetActorLocation() + GetActorForwardVector() * 500.0f;
-		
-		UE_LOG(LogTemp, Warning, TEXT("Drop Item!!"));
-		ItemDrop->SetActorLocation(DropLocation);
-		
-		ItemDrop->SetActorHiddenInGame(false);
-		ItemDrop->SetActorEnableCollision(true);*/
-
-	
-
-		TArray<class AMyItem*> ItemDrop = Inven;
-
-		for (auto item : ItemDrop)
-		{
-			if (item)
-			{
-				Inven.Remove(item);
-
-				FVector CharacterLocation =GetActorLocation();
-				FVector RandomOffset = FVector(FMath::FRandRange(-200.0f, 200.0f), FMath::FRandRange(-200.0f, 200.0f), 50);
-
-				FVector DropLocation = CharacterLocation + RandomOffset;
-
-				UE_LOG(LogTemp, Warning, TEXT("Drop Item!!"));
-				item->SetActorLocation(DropLocation);
-
-				item->SetActorHiddenInGame(false);
-				item->SetActorEnableCollision(true);
-
-			}
-		}
-	}
-
-}
