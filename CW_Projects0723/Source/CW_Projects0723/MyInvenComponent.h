@@ -25,9 +25,9 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void AddInven(AMyItem* item);
-	void DropItem();
-	void AllDropItem();
+	void AddInven(AMyItem* item); // 아이템 추가 
+	void DropItem(); // 아이템 하나 드랍
+	void AllDropItem(); // 모든아이템 드랍
 
 	
 protected:

@@ -51,6 +51,12 @@
     <ClInclude Include="..\..\Source\CW_Projects0723\MyAnimInstance.h">
       <Filter>Source\CW_Projects0723</Filter>
     </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyButton.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyButton.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\Source\CW_Projects0723\MyCharacter.cpp">
       <Filter>Source\CW_Projects0723</Filter>
     </ClCompile>
@@ -69,10 +75,22 @@
     <ClInclude Include="..\..\Source\CW_Projects0723\MyGameModeBase.h">
       <Filter>Source\CW_Projects0723</Filter>
     </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyHpBar.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyHpBar.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\Source\CW_Projects0723\MyInvenComponent.cpp">
       <Filter>Source\CW_Projects0723</Filter>
     </ClCompile>
     <ClInclude Include="..\..\Source\CW_Projects0723\MyInvenComponent.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyInventoryUI.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyInventoryUI.h">
       <Filter>Source\CW_Projects0723</Filter>
     </ClInclude>
     <ClCompile Include="..\..\Source\CW_Projects0723\MyItem.cpp">

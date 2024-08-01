@@ -17,6 +17,8 @@ AMyItem::AMyItem()
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> sn
 	(TEXT("/Script/Engine.StaticMesh'/Game/Weapon_Pack/Mesh/Weapons/Weapons_Kit/SM_Sword.SM_Sword'"));
 
+	//static ConstructorHelpers::FObjectFinder<UStaticMesh> mo // 몬스터가 기본으로 가지고 있는 아이템 
+	//(TEXT("/Script/Engine.StaticMesh'/Game/Weapon_Pack/Mesh/Weapons/Weapons_Kit/SM_Sickle.SM_Sickle'"));
 
 	if (sn.Succeeded())
 	{
@@ -32,6 +34,11 @@ AMyItem::AMyItem()
 
 	//_trigger->OnComponentBeginOverlap.Add
 	
+	/*if (mo.Succeeded())
+	{
+		_meshComponent->SetStaticMesh(mo.Object);
+	}*/
+
 }
 
 // Called when the game starts or when spawned

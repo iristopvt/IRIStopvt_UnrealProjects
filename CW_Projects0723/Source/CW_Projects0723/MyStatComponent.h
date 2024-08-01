@@ -21,6 +21,8 @@ struct FMystatData : public FTableRowBase
 
 };
 
+DECLARE_MULTICAST_DELEGATE_OneParam(HpChanged, float); // HP랑 델리게이트 연결 
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class CW_PROJECTS0723_API UMyStatComponent : public UActorComponent
 {
@@ -41,13 +43,19 @@ public:
 	void Reset();
 	int32 GetCurHp() { return _curHp; }
 	int32 GetAttackDamage() { return _attackDamage; }
-	
+	float HpRatio() { return _curHp / (float)_maxHp; }
+
 	void SetLevellAndInit(int level);
 
+	void SetHp(int32 hp);
 	int AddCurHp(float amount);
 	void AddAttackDamage(float amount);
 
 	bool IsDead() { return _curHp <= 0; }
+
+	
+	HpChanged _hpChangedDelegate;
+
 protected:
 
 
@@ -60,4 +68,5 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
 	int32 _attackDamage = 0;
 		
+
 };

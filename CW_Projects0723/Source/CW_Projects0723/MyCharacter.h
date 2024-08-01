@@ -53,12 +53,16 @@ public:
 	void AddItem(class AMyItem* item);
 	void DropItem();
 
+	//Inven
+	void InventoryOpen();
+
 protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void JumpA(const FInputActionValue& Value);
 	void AttackA(const FInputActionValue& Value);
 	void Death(const FInputActionValue& Value);
+	void InOpen(const FInputActionValue& Value);
 
 	void Drop(const FInputActionValue& Value);
 	void Init();
@@ -82,6 +86,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* _itemDropAction;
+
+	
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	bool _isAttacking = false; // 
@@ -111,6 +117,12 @@ public:
 	int32 _level = 1;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
 	class UMyStatComponent* _statCom;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
+	class UWidgetComponent* _hpbarkwidget;
+
+
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
 	class UMyInvenComponent* _item;
 

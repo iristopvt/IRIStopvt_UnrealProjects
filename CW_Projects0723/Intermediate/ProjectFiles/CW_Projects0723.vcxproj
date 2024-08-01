@@ -270,6 +270,10 @@
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClInclude Include="..\..\Source\CW_Projects0723\MyAnimInstance.h"/>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyButton.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyButton.h"/>
     <ClCompile Include="..\..\Source\CW_Projects0723\MyCharacter.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -282,10 +286,18 @@
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClInclude Include="..\..\Source\CW_Projects0723\MyGameModeBase.h"/>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyHpBar.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyHpBar.h"/>
     <ClCompile Include="..\..\Source\CW_Projects0723\MyInvenComponent.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClInclude Include="..\..\Source\CW_Projects0723\MyInvenComponent.h"/>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyInventoryUI.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyInventoryUI.h"/>
     <ClCompile Include="..\..\Source\CW_Projects0723\MyItem.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>

@@ -23,6 +23,8 @@ AMyGameModeBase::AMyGameModeBase()
 	{
 		_monsterClass = myMonster.Class;
 	}
+
+
 }
 
 void AMyGameModeBase::BeginPlay()

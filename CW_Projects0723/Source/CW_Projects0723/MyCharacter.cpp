@@ -15,7 +15,9 @@
 #include "Math/UnrealMath.h"
 #include "MyStatComponent.h"
 #include "MyInvenComponent.h"
-
+#include "Components/WidgetComponent.h"
+#include "MyHpBar.h"
+#include "MyInventoryUI.h"
 // Sets default values
 
 AMyCharacter::AMyCharacter()
@@ -48,6 +50,19 @@ AMyCharacter::AMyCharacter()
 	_statCom = CreateDefaultSubobject< UMyStatComponent>(TEXT("Stat"));
 	_item = CreateDefaultSubobject<UMyInvenComponent>(TEXT("Inven"));
 	
+	_hpbarkwidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HpBar"));
+	_hpbarkwidget->SetupAttachment(GetMesh());
+	_hpbarkwidget->SetWidgetSpace(EWidgetSpace::Screen);
+	_hpbarkwidget->SetRelativeLocation(FVector(0.0f, 0.0f, 220.0f));
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> hpBar(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BulePrint/UI/MyHpBar_BP.MyHpBar_BP_C'"));
+
+	if (hpBar.Succeeded())
+	{
+		_hpbarkwidget->SetWidgetClass(hpBar.Class);
+	}
+
+
 }
 
 // Called when the game starts or when spawned
@@ -71,6 +86,16 @@ void AMyCharacter::PostInitializeComponents()
 	}
 	
 	_statCom->SetLevellAndInit(_level);
+	//_statCom->_hpChangedDelegate.Add()
+	_hpbarkwidget->InitWidget();
+	auto hpBar = Cast<UMyHpBar>(_hpbarkwidget->GetUserWidgetObject());
+	
+	if (hpBar)
+	{
+		_statCom->_hpChangedDelegate.AddUObject(hpBar, &UMyHpBar::SetHpBarvalue);
+	}
+	
+
 }
 
 // Called every frame
@@ -102,6 +127,9 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		// chuck
 		EnhancedInputComponent->BindAction(_itemDropAction, ETriggerEvent::Triggered, this, &AMyCharacter::DropItem);
 
+		// Invenopen
+		//EnhancedInputComponent->BindAction(_InvenOpenAction, ETriggerEvent::Triggered, this, &AMyCharacter::InventoryOpen);
+
 	}
 }
 
@@ -110,7 +138,8 @@ float AMyCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AC
 
 	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
 	
-	float damaged = _statCom->AddCurHp(-Damage);
+	float damaged = -_statCom->AddCurHp(-Damage);
+
 	if (_statCom->IsDead())
 	{
 		if(_item != nullptr)
@@ -189,6 +218,23 @@ void AMyCharacter::DropItem()
 	
 }
 
+void AMyCharacter::InventoryOpen()
+{
+	UE_LOG(LogTemp, Log, TEXT("Inven OPEN!!"));
+	/*_myInventory = CreateDefaultSubobject<UWidgetComponent>(TEXT("InvenTorty"));
+	_myInventory->SetupAttachment(GetMesh());
+	_myInventory->SetWidgetSpace(EWidgetSpace::Screen);
+	_myInventory->SetRelativeLocation(FVector(0.0f, 0.0f, 110.0f));
+	
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> myInopen(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BulePrint/UI/MyInventoryUI_BP.MyInventoryUI_BP_C'"));
+
+	if (myInopen.Succeeded())
+	{
+		_myInventory->SetWidgetClass(myInopen.Class);
+	}*/
+}
+
 void AMyCharacter::Move(const FInputActionValue& Value)
 {
 	FVector2D MovementVector = Value.Get<FVector2D>();
@@ -256,6 +302,16 @@ void AMyCharacter::Death(const FInputActionValue& Value)
 	
 		_isAttacking = true;
 	}
+}
+
+void AMyCharacter::InOpen(const FInputActionValue& Value)
+{
+	bool isPressed = Value.Get<bool>();
+	if (isPressed)
+	{
+		InventoryOpen();
+	}
+
 }
 
 void AMyCharacter::Drop(const FInputActionValue& Value)

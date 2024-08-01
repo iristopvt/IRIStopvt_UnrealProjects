@@ -45,26 +45,7 @@ void UMyInvenComponent::AddInven(AMyItem* item)
 void UMyInvenComponent::DropItem()
 {
 
-	// 아예 실행안됨 
 
-	//if (_inven.Num() == 0)
-	//	return;
-
-	//	auto item = _inven.Pop();
-	///*	auto item = _inven.Last();
-	//	_inven.Remove;*/
-
-
-	//	float randFloat = FMath::FRandRange(0, PI * 2.0f);
-
-	//	float X = cosf(randFloat) * 300.0f;
-	//	float Y = sinf(randFloat) * 300.0f;
-	//	FVector playerPos = GetOwner()->GetActorLocation();
-	//	playerPos.Z = GetOwner()->GetActorLocation().Z;
-	//	FVector itemPos = playerPos + FVector(X, Y, 100.0f);
-	//	item->SetItemPos(itemPos);
-	//	item->Init();
-	//	UE_LOG(LogTemp, Log, TEXT("Item Drop"));
 
 		if (_inven.Num() == 0)
 			return;
@@ -81,7 +62,7 @@ void UMyInvenComponent::DropItem()
 		item->SetItemPos(itemPos);
 		item->Init();  // Ensure the item is properly initialized when dropped
 
-		UE_LOG(LogTemp, Log, TEXT("Item Dropped"));
+		UE_LOG(LogTemp, Log, TEXT("Item Drop"));
 
 }
 
