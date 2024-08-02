@@ -6,6 +6,8 @@
 #include "Engine/LocalPlayer.h"
 
 #include "EnhancedInputComponent.h"
+#include "Blueprint/UserWidget.h"
+#include "UObject/ConstructorHelpers.h"
 
 void AMyPlayerController::BeginPlay()
 {
@@ -21,22 +23,3 @@ void AMyPlayerController::BeginPlay()
 
 
 }
-void AMyPlayerController::OpenInventory()
-{
-}
-
-void AMyPlayerController::CloseInventory()
-{
-}
-
-void AMyPlayerController::SetupInputComponent()
-{
-
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
-	{
-		//EnhancedInputComponent->BindAction(InvenOpenAction, ETriggerEvent::Triggered, this, &AMyPlayerController::HandleInvenOpen);
-	}
-}
-
-
-

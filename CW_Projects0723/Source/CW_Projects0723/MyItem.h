@@ -6,6 +6,23 @@
 #include "GameFramework/Actor.h"
 #include "MyItem.generated.h"
 
+//UENUM()
+//enum class ItemType
+//{
+//
+//
+//}
+//
+//USTRUCT()
+//struct ItenInfo
+//{
+//	int itemId;
+//	ItemType Type;
+//
+//};
+
+
+
 UCLASS()
 class CW_PROJECTS0723_API AMyItem : public AActor
 {
@@ -39,5 +56,12 @@ public:
 	
 	//UFUNCTION()
 	//TArray<AMyItem*> Inven;
+
+	//
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 _itemId = -1;
+
+	/*UPROPERTY(VisibleAnywhere)
+	ItenInfo _info;*/
 
 };

@@ -33,13 +33,13 @@ void UMyInvenComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	// ...
 }
 
-void UMyInvenComponent::AddInven(AMyItem* item)
+void UMyInvenComponent::AddItem(AMyItem* item)
 {
-	if (item)
-	{
-		_inven.Add(item);
+	
+		_items.Add(item);
+		_itemAddedEvent.Broadcast(item->_itemId, _items.Num() - 1);
 		UE_LOG(LogTemp, Log, TEXT("Item Added to Inventory: %s"), *item->GetName());
-	}
+	
 }
 
 void UMyInvenComponent::DropItem()
@@ -47,16 +47,16 @@ void UMyInvenComponent::DropItem()
 
 
 
-		if (_inven.Num() == 0)
+		if (_items.Num() == 0)
 			return;
 
-		auto item = _inven.Pop();
+		auto item = _items.Pop();
 
 		float randFloat = FMath::FRandRange(0, PI * 2.0f);
 		float X = cosf(randFloat) * 300.0f;
 		float Y = sinf(randFloat) * 300.0f;
 		FVector playerPos = GetOwner()->GetActorLocation();
-		playerPos.Z = GetOwner()->GetActorLocation().Z;
+		playerPos.Z = 0.0f;
 		FVector itemPos = playerPos + FVector(X, Y, 100.0f);
 
 		item->SetItemPos(itemPos);
@@ -68,9 +68,9 @@ void UMyInvenComponent::DropItem()
 
 void UMyInvenComponent::AllDropItem()
 {
-	if (_inven.Num() > 0)
+	if (_items.Num() > 0)
 	{
-		TArray<AMyItem*> ItemsToDrop = _inven;
+		TArray<AMyItem*> ItemsToDrop = _items;
 
 		for (auto item : ItemsToDrop)
 		{
@@ -88,7 +88,7 @@ void UMyInvenComponent::AllDropItem()
 				item->SetItemPos(itemPos);
 				item->Init();  
 
-				_inven.Remove(item);
+				_items.Remove(item);
 			}
 		}
 	}

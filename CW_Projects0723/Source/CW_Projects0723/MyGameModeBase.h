@@ -25,6 +25,6 @@ public:
 	UPROPERTY()
 	TArray<class AMyCharacter*> _monster;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
-	class UWidgetComponent* _myInventory;
+
+
 };

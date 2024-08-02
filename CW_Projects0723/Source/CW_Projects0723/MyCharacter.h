@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "MyStatComponent.h"
-
+#include "MyInvenComponent.h"
 #include "MyCharacter.generated.h"
 
 class UInputComponent;
@@ -50,11 +50,11 @@ public:
 	void AddAttackDamage(AActor* actor, int amount);
 
 	//Items
-	void AddItem(class AMyItem* item);
+	void AddItemToCharacter(class AMyItem* item);
 	void DropItem();
 
-	//Inven
-	void InventoryOpen();
+	////Inven
+	//void InventoryOpen();
 
 protected:
 	void Move(const FInputActionValue& Value);
@@ -62,7 +62,6 @@ protected:
 	void JumpA(const FInputActionValue& Value);
 	void AttackA(const FInputActionValue& Value);
 	void Death(const FInputActionValue& Value);
-	void InOpen(const FInputActionValue& Value);
 
 	void Drop(const FInputActionValue& Value);
 	void Init();
@@ -118,27 +117,20 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
 	class UMyStatComponent* _statCom;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inven, meta = (AllowPrivateAccess = "true"))
+	class UMyInvenComponent* _invenCom;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
 	class UWidgetComponent* _hpbarkwidget;
 
-
-
+	// UI
+	// inven
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
-	class UMyInvenComponent* _item;
-
-	//UFUNCTION()
-	//TArray<class AMyItem*> Inven;
-	//void InvenAdd(AMyItem* Item);
-	//void ItempDrop();
-
-protected:
-	// ĳ���� ü�� ����
+	class UUserWidget* _invenWidget;
 
 
+	// UCLASS 매크로가 있고, UObject를 상속받는 클래스 자체를 저장할 수 있는 변수 자료형
+	// TSubclassOf<class UUserWidget> _invenClass;
 	
-
-	//DelegateTest1 _myDelegate1; ��������Ʈ 
-	//DElegateTEestOneParam _myDelegate2;
-	//DElegateTEestTwoParams _myDelegate3;
 
 };

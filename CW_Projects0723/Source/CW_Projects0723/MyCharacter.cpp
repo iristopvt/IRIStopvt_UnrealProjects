@@ -6,18 +6,20 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Components/CapsuleComponent.h"
 #include "MyAnimInstance.h"
 #include "Engine/DamageEvents.h"
+#include "Math/UnrealMathUtility.h"
 #include "MyItem.h"
-#include "Math/UnrealMath.h"
 #include "MyStatComponent.h"
 #include "MyInvenComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Blueprint/UserWidget.h"
 #include "MyHpBar.h"
 #include "MyInventoryUI.h"
+
 // Sets default values
 
 AMyCharacter::AMyCharacter()
@@ -48,7 +50,7 @@ AMyCharacter::AMyCharacter()
 
 	//stat
 	_statCom = CreateDefaultSubobject< UMyStatComponent>(TEXT("Stat"));
-	_item = CreateDefaultSubobject<UMyInvenComponent>(TEXT("Inven"));
+	_invenCom = CreateDefaultSubobject<UMyInvenComponent>(TEXT("Inven TO"));
 	
 	_hpbarkwidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HpBar"));
 	_hpbarkwidget->SetupAttachment(GetMesh());
@@ -62,7 +64,29 @@ AMyCharacter::AMyCharacter()
 		_hpbarkwidget->SetWidgetClass(hpBar.Class);
 	}
 
+	//_invenCom = CreateDefaultSubobject<UMyInvenComponent>(TEXT("invenroty_to"));
 
+	//_invenWidge = CreateDefaultSubobject<UWidgetComponent>(TEXT("inven"));
+	//_invenWidge->SetupAttachment(GetMesh());
+
+	//_invenWidge->SetWidgetSpace(EWidgetSpace::Screen);
+	//_invenWidge->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+
+	//static ConstructorHelpers::FClassFinder<UUserWidget> inven(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BulePrint/UI/MyInventoryUI_BP.MyInventoryUI_BP_C'"));
+	//
+	//if (inven.Succeeded())
+	//{
+	//	_invenWidge->SetWidgetClass(inven.Class);
+	//}
+
+	static ConstructorHelpers::FClassFinder<UMyInventoryUI> invenClass(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BulePrint/UI/MyInventoryUI_BP.MyInventoryUI_BP_C'"));
+
+	if (invenClass.Succeeded())
+	{
+		auto temp = invenClass.Class;
+		_invenWidget = CreateWidget<UUserWidget>(GetWorld(), invenClass.Class);
+
+	}
 }
 
 // Called when the game starts or when spawned
@@ -71,6 +95,14 @@ void AMyCharacter::BeginPlay()
 	Super::BeginPlay();
 	Init();
 
+	if (_invenWidget)
+	{
+		_invenWidget->AddToViewport();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Inven Widget did not Created"));
+	}
 }
 
 void AMyCharacter::PostInitializeComponents()
@@ -95,7 +127,11 @@ void AMyCharacter::PostInitializeComponents()
 		_statCom->_hpChangedDelegate.AddUObject(hpBar, &UMyHpBar::SetHpBarvalue);
 	}
 	
-
+	auto invenUI = Cast<UMyInventoryUI>(_invenWidget);
+	if (invenUI)
+	{
+		_invenCom->_itemAddedEvent.AddUObject(invenUI, &UMyInventoryUI::SetItem);
+	}
 }
 
 // Called every frame
@@ -127,9 +163,7 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		// chuck
 		EnhancedInputComponent->BindAction(_itemDropAction, ETriggerEvent::Triggered, this, &AMyCharacter::DropItem);
 
-		// Invenopen
-		//EnhancedInputComponent->BindAction(_InvenOpenAction, ETriggerEvent::Triggered, this, &AMyCharacter::InventoryOpen);
-
+		
 	}
 }
 
@@ -142,8 +176,8 @@ float AMyCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AC
 
 	if (_statCom->IsDead())
 	{
-		if(_item != nullptr)
-			_item->AllDropItem();
+		if(_invenCom != nullptr)
+			_invenCom->AllDropItem();
 
 	}
 	
@@ -199,41 +233,35 @@ void AMyCharacter::AddAttackDamage(AActor* actor, int amount)
 	_statCom->AddAttackDamage(amount);;
 }
 
-
-
-
-void AMyCharacter::AddItem(AMyItem* item)
+void AMyCharacter::AddItemToCharacter(AMyItem* item)
 {
-	// Add
-	if(_item != nullptr)
-		_item->AddInven(item);
-	//UE_LOG(LogTemp, Log, TEXT("ItemSize : %d"), _item->_inven.Num());
+	_invenCom->AddItem(item);
 }
 
 void AMyCharacter::DropItem()
 {
-	//Drop
-	if(_item != nullptr)
-		_item->DropItem();
-	
+	_invenCom->DropItem();
 }
 
-void AMyCharacter::InventoryOpen()
-{
-	UE_LOG(LogTemp, Log, TEXT("Inven OPEN!!"));
-	/*_myInventory = CreateDefaultSubobject<UWidgetComponent>(TEXT("InvenTorty"));
-	_myInventory->SetupAttachment(GetMesh());
-	_myInventory->SetWidgetSpace(EWidgetSpace::Screen);
-	_myInventory->SetRelativeLocation(FVector(0.0f, 0.0f, 110.0f));
-	
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> myInopen(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BulePrint/UI/MyInventoryUI_BP.MyInventoryUI_BP_C'"));
 
-	if (myInopen.Succeeded())
-	{
-		_myInventory->SetWidgetClass(myInopen.Class);
-	}*/
-}
+//
+//void AMyCharacter::AddItem(AMyItem* item)
+//{
+//	// Add
+//	if(_item != nullptr)
+//		_item->AddItem(item);
+//	//UE_LOG(LogTemp, Log, TEXT("ItemSize : %d"), _item->_inven.Num());
+//}
+//
+//void AMyCharacter::DropItem()
+//{
+//	//Drop
+//	if(_item != nullptr)
+//		_item->DropItem();
+//	
+//}
+
 
 void AMyCharacter::Move(const FInputActionValue& Value)
 {
@@ -304,15 +332,6 @@ void AMyCharacter::Death(const FInputActionValue& Value)
 	}
 }
 
-void AMyCharacter::InOpen(const FInputActionValue& Value)
-{
-	bool isPressed = Value.Get<bool>();
-	if (isPressed)
-	{
-		InventoryOpen();
-	}
-
-}
 
 void AMyCharacter::Drop(const FInputActionValue& Value)
 {

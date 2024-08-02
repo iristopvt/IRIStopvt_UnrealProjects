@@ -67,7 +67,7 @@ void AMyItem::OnMyCharacteroverlap(UPrimitiveComponent* OverlappedComponent, AAc
 		// myCharacter->_attackDamage += 10;
 		myCharacter->AddAttackDamage(this,50);
 		UE_LOG(LogTemp, Warning, TEXT("Damage UP!!"));
-		myCharacter->AddItem(this);
+		myCharacter->AddItemToCharacter(this);
 		// myCharacter->InvenAdd(this);
 		
 		Disable();
