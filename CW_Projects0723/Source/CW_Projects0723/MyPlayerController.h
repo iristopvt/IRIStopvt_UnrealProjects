@@ -29,7 +29,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* _moveAction;
 
-
+	void ShowUI();
+	void HideUI();
 
 protected:
 	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = Input)

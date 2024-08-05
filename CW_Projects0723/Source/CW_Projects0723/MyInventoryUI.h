@@ -25,6 +25,9 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UUniformGridPanel* SlotGrid;
 	
+	UPROPERTY(meta = (BindWidget))
+	class UButton* DropBtn;
+
 	UFUNCTION()
 	void SetItem(int32 itemId, int32 index);
 

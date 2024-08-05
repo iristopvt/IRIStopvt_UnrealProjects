@@ -63,6 +63,8 @@ protected:
 	void AttackA(const FInputActionValue& Value);
 	void Death(const FInputActionValue& Value);
 
+	//void InvenOpen(const FInputActionValue& Value);
+
 	void Drop(const FInputActionValue& Value);
 	void Init();
 
@@ -86,7 +88,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* _itemDropAction;
 
-	
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	//UInputAction* _InvenOpen;
+
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	bool _isAttacking = false; // 
@@ -124,9 +128,7 @@ public:
 	class UWidgetComponent* _hpbarkwidget;
 
 	// UI
-	// inven
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
-	class UUserWidget* _invenWidget;
+
 
 
 	// UCLASS 매크로가 있고, UObject를 상속받는 클래스 자체를 저장할 수 있는 변수 자료형

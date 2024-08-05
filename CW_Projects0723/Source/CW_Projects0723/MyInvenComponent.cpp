@@ -50,7 +50,9 @@ void UMyInvenComponent::DropItem()
 		if (_items.Num() == 0)
 			return;
 
+		int itemSize = _items.Num();
 		auto item = _items.Pop();
+		_itemAddedEvent.Broadcast(-1, itemSize-1 );
 
 		float randFloat = FMath::FRandRange(0, PI * 2.0f);
 		float X = cosf(randFloat) * 300.0f;
@@ -60,8 +62,8 @@ void UMyInvenComponent::DropItem()
 		FVector itemPos = playerPos + FVector(X, Y, 100.0f);
 
 		item->SetItemPos(itemPos);
-		item->Init();  // Ensure the item is properly initialized when dropped
-
+		//item->Init();  // Ensure the item is properly initialized when dropped
+		//_itemAddedEvent.Broadcast(-1,)
 		UE_LOG(LogTemp, Log, TEXT("Item Drop"));
 
 }

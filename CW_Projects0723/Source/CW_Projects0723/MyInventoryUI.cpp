@@ -26,6 +26,7 @@ void UMyInventoryUI::NativeConstruct()
 
 	_axe = LoadObject<UTexture2D>(nullptr, TEXT("/Script/Engine.Texture2D'/Game/Graphic/icon/Tex_tools_01.Tex_tools_01'"));
 	_defalut = LoadObject<UTexture2D>(nullptr, TEXT("/Script/Engine.Texture2D'/Game/Graphic/icon/Tex_DefaultTexture.Tex_DefaultTexture'"));
+	//DropBtn->OnClicked
 }
 
 void UMyInventoryUI::SetItem(int32 itemId, int32 index)

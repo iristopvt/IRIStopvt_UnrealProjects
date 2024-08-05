@@ -9,6 +9,17 @@
 #include "Blueprint/UserWidget.h"
 #include "UObject/ConstructorHelpers.h"
 
+void AMyPlayerController::ShowUI()
+{
+	bShowMouseCursor = true;
+	
+}
+
+void AMyPlayerController::HideUI()
+{
+	bShowMouseCursor = false;
+}
+
 void AMyPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -20,6 +31,8 @@ void AMyPlayerController::BeginPlay()
 		subSystem->AddMappingContext(_inputMappingContext, 0);
 	}
 
-
+	//bShowMouseCursor = true;
+	//UnPossess();
+	
 
 }

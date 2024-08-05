@@ -2,6 +2,11 @@
 
 
 #include "MyCharacter.h"
+// UI
+#include "MyGameInstance.h"
+#include "MyUIManager.h"
+#include "MyInventoryUI.h"
+
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
@@ -18,7 +23,9 @@
 #include "Components/WidgetComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "MyHpBar.h"
-#include "MyInventoryUI.h"
+#include "MyPlayerController.h"
+#include "Components/Button.h"
+
 
 // Sets default values
 
@@ -27,9 +34,6 @@ AMyCharacter::AMyCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
-	//TODO
-	//skeletal Mash
-	// /Script/Engine.SkeletalMesh'/Game/ParagonKallari/Characters/Heroes/Kallari/Meshes/Kallari.Kallari'
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> sm
 	(TEXT("/Script/Engine.SkeletalMesh'/Game/ParagonKallari/Characters/Heroes/Kallari/Meshes/Kallari.Kallari'"));
 
@@ -64,29 +68,7 @@ AMyCharacter::AMyCharacter()
 		_hpbarkwidget->SetWidgetClass(hpBar.Class);
 	}
 
-	//_invenCom = CreateDefaultSubobject<UMyInvenComponent>(TEXT("invenroty_to"));
-
-	//_invenWidge = CreateDefaultSubobject<UWidgetComponent>(TEXT("inven"));
-	//_invenWidge->SetupAttachment(GetMesh());
-
-	//_invenWidge->SetWidgetSpace(EWidgetSpace::Screen);
-	//_invenWidge->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
-
-	//static ConstructorHelpers::FClassFinder<UUserWidget> inven(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BulePrint/UI/MyInventoryUI_BP.MyInventoryUI_BP_C'"));
-	//
-	//if (inven.Succeeded())
-	//{
-	//	_invenWidge->SetWidgetClass(inven.Class);
-	//}
-
-	static ConstructorHelpers::FClassFinder<UMyInventoryUI> invenClass(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BulePrint/UI/MyInventoryUI_BP.MyInventoryUI_BP_C'"));
-
-	if (invenClass.Succeeded())
-	{
-		auto temp = invenClass.Class;
-		_invenWidget = CreateWidget<UUserWidget>(GetWorld(), invenClass.Class);
-
-	}
+	
 }
 
 // Called when the game starts or when spawned
@@ -95,14 +77,6 @@ void AMyCharacter::BeginPlay()
 	Super::BeginPlay();
 	Init();
 
-	if (_invenWidget)
-	{
-		_invenWidget->AddToViewport();
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("Inven Widget did not Created"));
-	}
 }
 
 void AMyCharacter::PostInitializeComponents()
@@ -127,10 +101,16 @@ void AMyCharacter::PostInitializeComponents()
 		_statCom->_hpChangedDelegate.AddUObject(hpBar, &UMyHpBar::SetHpBarvalue);
 	}
 	
-	auto invenUI = Cast<UMyInventoryUI>(_invenWidget);
+	// TODO : invenWidget
+
+	auto invenUI = UIManager->GetInvenUI();
+
 	if (invenUI)
 	{
 		_invenCom->_itemAddedEvent.AddUObject(invenUI, &UMyInventoryUI::SetItem);
+		if(invenUI->DropBtn)
+			invenUI->DropBtn->OnClicked.AddDynamic(_invenCom, &UMyInvenComponent::DropItem);
+
 	}
 }
 
@@ -163,7 +143,9 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		// chuck
 		EnhancedInputComponent->BindAction(_itemDropAction, ETriggerEvent::Triggered, this, &AMyCharacter::DropItem);
 
-		
+		//Inven
+		//EnganCed
+
 	}
 }
 
@@ -223,6 +205,12 @@ void AMyCharacter::Attackhit()
 		hitResult.GetActor()->TakeDamage(_statCom->GetAttackDamage(), DamageEvent, GetController(), this);
 		
 	}
+	// TODO : 삭제할 코드  버튼 실습용 
+	if (GetController())
+	{
+		Cast< AMyPlayerController>(GetController())->ShowUI();
+	}
+
 
 	DrawDebugSphere(GetWorld(), center, attackRadius, 12, drawColor, false, 2.0f);
 }

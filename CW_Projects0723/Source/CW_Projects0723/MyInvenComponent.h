@@ -30,6 +30,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void AddItem(AMyItem* item); // 아이템 추가 
+	UFUNCTION()
 	void DropItem(); // 아이템 하나 드랍
 	void AllDropItem(); // 모든아이템 드랍
 

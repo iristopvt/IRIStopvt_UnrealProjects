@@ -3,6 +3,8 @@
 
 #include "MyGameInstance.h"
 
+#include "MyUIManager.h"
+
 UMyGameInstance::UMyGameInstance()
 {
 	static ConstructorHelpers::FObjectFinder<UDataTable> dataTable
@@ -22,7 +24,11 @@ void UMyGameInstance::Init()
 	auto statData = GetStatDataMyLevel(2);
 
 	UE_LOG(LogTemp, Warning, TEXT("Level : %d , MaxHp : %d , Attack : %d")
-		, statData->level, statData->maxHp, statData->attack);
+		,statData->level, statData->maxHp, statData->attack);
+
+	FActorSpawnParameters params;
+	params.Name = TEXT("UIManger");
+	_uiManger = GetWorld()->SpawnActor< AMyUIManager>(FVector::ZeroVector, FRotator::ZeroRotator, params);
 }
 
 FMystatData* UMyGameInstance::GetStatDataMyLevel(int level)
