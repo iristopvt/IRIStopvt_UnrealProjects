@@ -25,7 +25,7 @@
 #include "MyHpBar.h"
 #include "MyPlayerController.h"
 #include "Components/Button.h"
-
+#include "MyAIController.h"
 
 // Sets default values
 
@@ -75,7 +75,12 @@ AMyCharacter::AMyCharacter()
 void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	_aiController = Cast<AMyAIController>(GetController());
+	
 	Init();
+
+	// TODO : invenWidget
 
 }
 
@@ -91,6 +96,7 @@ void AMyCharacter::PostInitializeComponents()
 	_animInstance->_deathDelegate.AddUObject(this, &AMyCharacter::Disable);
 	}
 	
+
 	_statCom->SetLevellAndInit(_level);
 	//_statCom->_hpChangedDelegate.Add()
 	_hpbarkwidget->InitWidget();
@@ -101,17 +107,8 @@ void AMyCharacter::PostInitializeComponents()
 		_statCom->_hpChangedDelegate.AddUObject(hpBar, &UMyHpBar::SetHpBarvalue);
 	}
 	
-	// TODO : invenWidget
+	
 
-	auto invenUI = UIManager->GetInvenUI();
-
-	if (invenUI)
-	{
-		_invenCom->_itemAddedEvent.AddUObject(invenUI, &UMyInventoryUI::SetItem);
-		if(invenUI->DropBtn)
-			invenUI->DropBtn->OnClicked.AddDynamic(_invenCom, &UMyInvenComponent::DropItem);
-
-	}
 }
 
 // Called every frame
@@ -160,7 +157,7 @@ float AMyCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AC
 	{
 		if(_invenCom != nullptr)
 			_invenCom->AllDropItem();
-
+		//Disable();
 	}
 	
 	return damaged;
@@ -169,6 +166,7 @@ float AMyCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AC
 void AMyCharacter::OnAttackEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	_isAttacking = false;
+	_attackEndendDelegate.Broadcast();
 }
 
 void AMyCharacter::Attackhit()
@@ -205,14 +203,32 @@ void AMyCharacter::Attackhit()
 		hitResult.GetActor()->TakeDamage(_statCom->GetAttackDamage(), DamageEvent, GetController(), this);
 		
 	}
-	// TODO : 삭제할 코드  버튼 실습용 
-	if (GetController())
-	{
-		Cast< AMyPlayerController>(GetController())->ShowUI();
-	}
+	//// TODO : 삭제할 코드  버튼 실습용 
+	//if (GetController())
+	//{
+	//	Cast< AMyPlayerController>(GetController())->ShowUI();
+	//}
 
 
 	DrawDebugSphere(GetWorld(), center, attackRadius, 12, drawColor, false, 2.0f);
+}
+
+void AMyCharacter::Attack_AI()
+{
+
+	if ( _isAttacking == false && _animInstance != nullptr)
+	{
+
+
+		_animInstance->PlayAttackMontage();
+		_isAttacking = true;
+
+		_curAttackIndex %= 3;
+		_curAttackIndex++;
+
+
+		_animInstance->JumpToSection(_curAttackIndex);
+	}
 }
 
 void AMyCharacter::AddAttackDamage(AActor* actor, int amount)
@@ -337,7 +353,11 @@ void AMyCharacter::Init()
 	SetActorHiddenInGame(false);
 	SetActorEnableCollision(true);
 	PrimaryActorTick.bCanEverTick = true;
+	//  TODO : PossessedBy()
 
+	if (_aiController && GetController() == nullptr)
+		_aiController->Possess(this);
+		
 }
 
 void AMyCharacter::Disable()
@@ -346,6 +366,10 @@ void AMyCharacter::Disable()
 	SetActorHiddenInGame(true); 
 	SetActorEnableCollision(false);
 	PrimaryActorTick.bCanEverTick = false;
-
+	
+	auto controller = GetController();
+	if(controller)
+		GetController()->UnPossess(); 
+	UnPossessed();
 }
 

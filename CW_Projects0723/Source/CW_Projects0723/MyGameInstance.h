@@ -35,5 +35,7 @@ private:
 
 	UPROPERTY()
 	 AMyUIManager* _uiManger;
+
+	 bool bIsInitlalized = false;
 	
 };

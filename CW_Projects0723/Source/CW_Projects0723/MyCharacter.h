@@ -14,6 +14,7 @@ class UInputMappingContext;
 struct FInputActionValue;
 
 
+DECLARE_MULTICAST_DELEGATE(Delegate_AttackEnded);
 
 UCLASS()
 class CW_PROJECTS0723_API AMyCharacter : public ACharacter
@@ -46,6 +47,9 @@ public:
 	UFUNCTION()
 	void Attackhit();
 
+	UFUNCTION()
+	void Attack_AI();
+
 	int GetCurHp() { return _statCom->GetCurHp(); }
 	void AddAttackDamage(AActor* actor, int amount);
 
@@ -55,7 +59,7 @@ public:
 
 	////Inven
 	//void InventoryOpen();
-
+	Delegate_AttackEnded _attackEndendDelegate;
 protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
@@ -124,11 +128,13 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inven, meta = (AllowPrivateAccess = "true"))
 	class UMyInvenComponent* _invenCom;
 
+	//UI
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
 	class UWidgetComponent* _hpbarkwidget;
 
-	// UI
-
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
+	class AMyAIController* _aiController;
 
 
 	// UCLASS 매크로가 있고, UObject를 상속받는 클래스 자체를 저장할 수 있는 변수 자료형
