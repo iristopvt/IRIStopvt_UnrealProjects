@@ -12,7 +12,7 @@ UMyAnimInstance::UMyAnimInstance()
 	(TEXT("/Script/Engine.AnimMontage'/Game/BulePrint/Animation/MyAnimMontage.MyAnimMontage'"));
 
 	//static ConstructorHelpers::FObjectFinder<UAnimMontage> die
-	//(TEXT("/Script/Engine.AnimMontage'/Game/BulePrint/Animation/MyDieAnimMontage.MyDieAnimMontage'"));
+	//(TEXT("/Script/Engine.AnimMontage'/Game/BulePrint/Animation/PlayerAnim/MyPlayerMontage.MyPlayerMontage'"));
 
 	if (am.Succeeded())
 	{

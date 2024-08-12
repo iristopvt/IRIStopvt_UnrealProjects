@@ -14,6 +14,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+
 #include "MyAnimInstance.h"
 #include "Engine/DamageEvents.h"
 #include "Math/UnrealMathUtility.h"
@@ -27,6 +28,11 @@
 #include "Components/Button.h"
 #include "MyAIController.h"
 
+
+// _particle
+#include "MyEffecManger.h"
+
+
 // Sets default values
 
 AMyCharacter::AMyCharacter()
@@ -35,7 +41,7 @@ AMyCharacter::AMyCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> sm
-	(TEXT("/Script/Engine.SkeletalMesh'/Game/ParagonKallari/Characters/Heroes/Kallari/Meshes/Kallari.Kallari'"));
+	(TEXT("/Script/Engine.ParticleSystem'/Game/ParagonGreystone/FX/Particles/Greystone/Abilities/Deflect/FX/P_Greystone_Deflect_Remove.P_Greystone_Deflect_Remove'"));
 
 	if (sm.Succeeded())
 	{
@@ -43,19 +49,29 @@ AMyCharacter::AMyCharacter()
 	}
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -88.0f), FRotator(0.0f, -90.0f, 0.0f));
 
-	_springArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	_camera = CreateDefaultSubobject< UCameraComponent>(TEXT("Camera"));
-
-	_springArm->SetupAttachment(GetCapsuleComponent());
-	_camera->SetupAttachment(_springArm);
-
-	_springArm->TargetArmLength = 500.0f;
-	_springArm->SetRelativeRotation(FRotator(-35.0f, 0.0f, 0.0f));
+	RootComponent = GetCapsuleComponent();
 
 	//stat
 	_statCom = CreateDefaultSubobject< UMyStatComponent>(TEXT("Stat"));
+	//_statCom->_deathDelegate.AddLambda([this]()-> void { this->GetController()->UnPossess(); });
+	// 위에부분 추가 
+
+	// 도저히 모르겠어서 gpt 물어봄 
+	if (_statCom)
+	{
+		// Ensure _statCom is valid before adding the lambda
+		_statCom->_deathDelegate.AddLambda([this]()
+			{
+				if (AController* Controller = this->GetController())
+				{
+					Controller->UnPossess();
+				}
+			});
+	}
+	//
+
 	_invenCom = CreateDefaultSubobject<UMyInvenComponent>(TEXT("Inven TO"));
-	
+
 	_hpbarkwidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HpBar"));
 	_hpbarkwidget->SetupAttachment(GetMesh());
 	_hpbarkwidget->SetWidgetSpace(EWidgetSpace::Screen);
@@ -68,19 +84,16 @@ AMyCharacter::AMyCharacter()
 		_hpbarkwidget->SetWidgetClass(hpBar.Class);
 	}
 
-	
+	APawn::AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+
 }
 
 // Called when the game starts or when spawned
 void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	_aiController = Cast<AMyAIController>(GetController());
-	
 	Init();
-
-	// TODO : invenWidget
 
 }
 
@@ -111,40 +124,6 @@ void AMyCharacter::PostInitializeComponents()
 
 }
 
-// Called every frame
-void AMyCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-// Called to bind functionality to input
-void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
-	{
-		// Moving
-		EnhancedInputComponent->BindAction(_moveAction, ETriggerEvent::Triggered, this, &AMyCharacter::Move);
-
-		// Looking
-		EnhancedInputComponent->BindAction(_lookAction, ETriggerEvent::Triggered, this, &AMyCharacter::Look);
-	
-		// jumping
-		EnhancedInputComponent->BindAction(_jumpAction, ETriggerEvent::Triggered, this, &AMyCharacter::JumpA);
-	
-		// Attack
-		EnhancedInputComponent->BindAction(_attackAction, ETriggerEvent::Started, this, &AMyCharacter::AttackA);
-		
-		// chuck
-		EnhancedInputComponent->BindAction(_itemDropAction, ETriggerEvent::Triggered, this, &AMyCharacter::DropItem);
-
-		//Inven
-		//EnganCed
-
-	}
-}
 
 float AMyCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
@@ -155,8 +134,8 @@ float AMyCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AC
 
 	if (_statCom->IsDead())
 	{
-		if(_invenCom != nullptr)
-			_invenCom->AllDropItem();
+		/*if(_invenCom != nullptr)
+			_invenCom->AllDropItem();*/
 		//Disable();
 	}
 	
@@ -172,64 +151,90 @@ void AMyCharacter::OnAttackEnded(UAnimMontage* Montage, bool bInterrupted)
 void AMyCharacter::Attackhit()
 {
 	
+	//FHitResult hitResult;
+	//FCollisionQueryParams params(NAME_None, false, this);
+
+	//float attackRange = 500.0f;
+	//float attackRadius = 150.0f;
+	//FVector forward = GetActorForwardVector();
+
+	//FQuat quat = FQuat::FindBetweenVectors(FVector(0, 0, 1), forward); // FRotationMatrix::MakeFromZ(forward).ToQuat();
+	//
+	//bool bResult = GetWorld()->SweepSingleByChannel
+	//(
+	//	hitResult,
+	//	GetActorLocation(),
+	//	GetActorLocation() + GetActorForwardVector() * attackRange,
+	//	quat,
+	//	ECollisionChannel::ECC_GameTraceChannel2,
+	//	FCollisionShape::MakeSphere(attackRadius),
+	//	params
+	//	);
+
+	//FVector vec = GetActorForwardVector() * attackRange;
+	//FVector center = GetActorLocation() + vec * 0.5f;
+	//
+	//FColor drawColor = FColor::Green;
+
+
+	//if (bResult && hitResult.GetActor()->IsValidLowLevel())
+	//{
+	//	drawColor = FColor::Red;
+
+	//	FDamageEvent DamageEvent;
+	//	hitResult.GetActor()->TakeDamage(_statCom->GetAttackDamage(), DamageEvent, GetController(), this);
+	//	
+	//}
+	//
+	//DrawDebugSphere(GetWorld(), center, attackRadius, 12, drawColor, false, 2.0f);
 	FHitResult hitResult;
 	FCollisionQueryParams params(NAME_None, false, this);
 
-	float attackRange = 500.0f;
-	float attackRadius = 150.0f;
+	float attackRange = 1000.0f;
+	float attackRadius = 20.0f;
+
+	FVector forward = GetActorForwardVector();
+	FQuat quat = FQuat::FindBetweenVectors(FVector(0, 0, 1), forward); // FRotationMatrix::MakeFromZ(forward).ToQuat();
+
+	FVector center = GetActorLocation() + forward * attackRange * 0.5f;
+	FVector start = GetActorLocation();
+	FVector end = GetActorLocation() + forward * (attackRange * 0.5f);
 
 	bool bResult = GetWorld()->SweepSingleByChannel
 	(
 		hitResult,
-		GetActorLocation(),
-		GetActorLocation() + GetActorForwardVector() * attackRange,
-		FQuat::Identity,
+		start,
+		end,
+		quat,
 		ECollisionChannel::ECC_GameTraceChannel2,
-		FCollisionShape::MakeSphere(attackRadius),
+		FCollisionShape::MakeCapsule(attackRadius, attackRange * 0.5f),
 		params
-		);
+	);
 
-	FVector vec = GetActorForwardVector() * attackRange;
-	FVector center = GetActorLocation() + vec * 0.5f;
-	
+
+
 	FColor drawColor = FColor::Green;
 
-
+	// Check if a hit was detected and apply damage if valid
 	if (bResult && hitResult.GetActor()->IsValidLowLevel())
 	{
 		drawColor = FColor::Red;
+		FDamageEvent damageEvent;
+		hitResult.GetActor()->TakeDamage(_statCom->GetAttackDamage(), damageEvent, GetController(), this);
+		FVector hitPoint = hitResult.ImpactPoint; // 파티파티클 시스템 
+		_hitPoint = hitResult.ImpactPoint;
 
-		FDamageEvent DamageEvent;
-		hitResult.GetActor()->TakeDamage(_statCom->GetAttackDamage(), DamageEvent, GetController(), this);
-		
+		//EffecManger->Play("MeleeAttack", _hitPoint);
+		//_attackHitEvent.Broadcast();
+	
 	}
-	//// TODO : 삭제할 코드  버튼 실습용 
-	//if (GetController())
-	//{
-	//	Cast< AMyPlayerController>(GetController())->ShowUI();
-	//}
 
 
-	DrawDebugSphere(GetWorld(), center, attackRadius, 12, drawColor, false, 2.0f);
+	// DEBUG : DrawCapsule
+	DrawDebugCapsule(GetWorld(), center, attackRange * 0.5f, attackRadius, quat, drawColor, false, 2.0f);
 }
 
-void AMyCharacter::Attack_AI()
-{
 
-	if ( _isAttacking == false && _animInstance != nullptr)
-	{
-
-
-		_animInstance->PlayAttackMontage();
-		_isAttacking = true;
-
-		_curAttackIndex %= 3;
-		_curAttackIndex++;
-
-
-		_animInstance->JumpToSection(_curAttackIndex);
-	}
-}
 
 void AMyCharacter::AddAttackDamage(AActor* actor, int amount)
 {
@@ -267,85 +272,6 @@ void AMyCharacter::DropItem()
 //}
 
 
-void AMyCharacter::Move(const FInputActionValue& Value)
-{
-	FVector2D MovementVector = Value.Get<FVector2D>();
-	if (Controller != nullptr)
-	{
-		_varical = MovementVector.Y;
-		_horizontal = MovementVector.X;
-
-		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
-		AddMovementInput(GetActorRightVector(), MovementVector.X);
-	}
-}
-
-void AMyCharacter::Look(const FInputActionValue& Value)
-{
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
-
-	if (Controller != nullptr)
-	{
-		AddControllerYawInput(LookAxisVector.X);
-	
-	}
-}
-
-void AMyCharacter::JumpA(const FInputActionValue& Value)
-{
-	bool isPressed = Value.Get<bool>();
-	
-	if(isPressed)
-	{
-	//UE_LOG(LogTemp, Warning, TEXT("Jump!!"));
-		ACharacter::Jump();
-	}
-}
-
-void AMyCharacter::AttackA(const FInputActionValue& Value)
-{
-	bool isPressed = Value.Get<bool>();
-	
-	if (isPressed && _isAttacking == false && _animInstance != nullptr)
-	{
-	
-		//UE_LOG(LogTemp, Warning, TEXT("Attack!!"));
-
-		_animInstance->PlayAttackMontage();
-		_isAttacking = true;
-
-		_curAttackIndex %= 3;
-		_curAttackIndex++;
-
-
-		_animInstance->JumpToSection(_curAttackIndex);
-	}
-
-
-}
-
-void AMyCharacter::Death(const FInputActionValue& Value)
-{
-	bool isPressed = Value.Get<bool>();
-
-	if (isPressed && _isAttacking == false && _animInstance != nullptr)
-	{
-		_animInstance->PlayDeath();
-	
-		_isAttacking = true;
-	}
-}
-
-
-void AMyCharacter::Drop(const FInputActionValue& Value)
-{
-	bool isPressed = Value.Get<bool>();
-	if (isPressed)
-	{
-		DropItem();
-	}
-
-}
 
 void AMyCharacter::Init()
 {
@@ -353,23 +279,26 @@ void AMyCharacter::Init()
 	SetActorHiddenInGame(false);
 	SetActorEnableCollision(true);
 	PrimaryActorTick.bCanEverTick = true;
-	//  TODO : PossessedBy()
+	_statCom->_deathDelegate.AddLambda([this]()-> void { this->GetController()->UnPossess(); }); // 기존 강사님 부분 
 
-	if (_aiController && GetController() == nullptr)
-		_aiController->Possess(this);
-		
+	if (_aiController && GetController() == nullptr) // 컨트롤러를 다시 입혀햐하기때문에 컨트롤러로 기억할수있도록... 재 빙의를 위해...
+	{
+		auto ai_Controller = Cast<AMyAIController>(_aiController);
+		if (ai_Controller)
+			ai_Controller->Possess(this);
+	}
 }
 
 void AMyCharacter::Disable()
 {
 	// ��Ȱ��ȭ 
-	SetActorHiddenInGame(true); 
+	SetActorHiddenInGame(true);
 	SetActorEnableCollision(false);
 	PrimaryActorTick.bCanEverTick = false;
-	
 	auto controller = GetController();
-	if(controller)
-		GetController()->UnPossess(); 
-	UnPossessed();
+	if (controller)
+		GetController()->UnPossess();
+	//UnPossessed();
+ // 위에 한줄 추가 
 }
 

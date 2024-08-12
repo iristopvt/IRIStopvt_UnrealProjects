@@ -7,6 +7,8 @@
 #include "Engine/DataTable.h"
 #include "MyStatComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(DeathDelegate);
+
 USTRUCT()
 struct FMystatData : public FTableRowBase
 {
@@ -55,18 +57,19 @@ public:
 
 	
 	HpChanged _hpChangedDelegate;
+	DeathDelegate _deathDelegate;
 
 protected:
 
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
-	int32 _curHp = 0;
+	int32 _curHp = 100;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
-	int32 _maxHp = 0;
+	int32 _maxHp = 100;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = "true"))
-	int32 _attackDamage = 0;
+	int32 _attackDamage = 10;
 		
 
 };

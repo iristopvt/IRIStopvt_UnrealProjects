@@ -11,6 +11,7 @@
 #include "MyCharacter.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/OverlapResult.h"
+#include "MyPlayer.h"
 
 UBT_Service_FindTarget::UBT_Service_FindTarget()
 {
@@ -47,25 +48,63 @@ void UBT_Service_FindTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* 
 		qparams
 	);
 
+
+
+	///// 여기서 TODO 똑같이 터져서 gpt에 물어봄 
+	//auto blackboardComponent = OwnerComp.GetBlackboardComponent();// TODO 
+	//if (blackboardComponent == nullptr) // TODO 
+	//	return; // TODO 
+
+
+	//bool bFoundTarget = false; // TODO 
+
 	if (bResult)
 	{
 		for (auto& result : overLapResult)
 		{
-			auto myCharacter = Cast<AMyCharacter>(result.GetActor());
-			if (myCharacter != nullptr && myCharacter->GetController()->IsPlayerController())
+			auto myCharacter = Cast<AMyPlayer>(result.GetActor());
+
+			if (myCharacter != nullptr )
 			{
+				auto myCharacterContriller = myCharacter->GetController();
+				if (myCharacterContriller != nullptr && myCharacterContriller->IsPlayerController())
+				{
+
 				OwnerComp.GetBlackboardComponent()->SetValueAsObject(FName(TEXT("Target")), myCharacter);
-				DrawDebugSphere(world, center, searchRadius, 32, FColor::Red, false, 0.3f);
 				
+				// DEBUG : DrawCapsule
+				//DrawDebugSphere(world, center, searchRadius, 32, FColor::Red, false, 0.3f);
+				
+				}
 				return;
 			}
+
+			//auto myCharacter = Cast<AMyPlayer>(result.GetActor());// TODO 
+			//if (myCharacter != nullptr && myCharacter->GetController() && myCharacter->GetController()->IsPlayerController())
+			//{
+			//	blackboardComponent->SetValueAsObject(FName(TEXT("Target")), myCharacter);
+			//	DrawDebugSphere(world, center, searchRadius, 32, FColor::Red, false, 0.3f);
+			//	bFoundTarget = true;
+			//	break; // Exit loop after finding the target// TODO 
+			//}
 		}
-		DrawDebugSphere(world, center, searchRadius, 32, FColor::Green, false, 0.3f);
+		// DEBUG : DrawCapsule
+
+	// 	DrawDebugSphere(world, center, searchRadius, 32, FColor::Green, false, 0.3f);
+
+		//if (!bFoundTarget)//TODO
+		//{
+		//	blackboardComponent->SetValueAsObject(FName(TEXT("Target")), nullptr);
+		//	DrawDebugSphere(world, center, searchRadius, 32, FColor::Green, false, 0.3f);
+		//} // TODO
+
 
 	}
 	else
 	{
 		OwnerComp.GetBlackboardComponent()->SetValueAsObject(FName(TEXT("Target")), nullptr);
-		DrawDebugSphere(world, center, searchRadius, 32, FColor::Green, false, 0.3f);
+		
+		// DEBUG : DrawCapsule
+		//DrawDebugSphere(world, center, searchRadius, 32, FColor::Green, false, 0.3f);
 	}
 }

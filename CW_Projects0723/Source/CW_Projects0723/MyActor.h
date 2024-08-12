@@ -26,10 +26,10 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class UStaticMeshComponent* _sm;
 
-	UPROPERTY(EditAnywhere, Category = "Transform Value") // Ä«Å×°í¸® ¼³Á¤ ÀÌ°ÍÀÌ ÇÁ·ÎÆÛÆ¼
+	UPROPERTY(EditAnywhere, Category = "Transform Value") // Ä«ï¿½×°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼
 		float _rotationSpeed = 2.0f;
 
-	UPROPERTY(EditAnywhere, Category = "Transform Value") // Ä«Å×°í¸® ¼³Á¤ ÀÌ°ÍÀÌ ÇÁ·ÎÆÛÆ¼
+	UPROPERTY(EditAnywhere, Category = "Transform Value") // Ä«ï¿½×°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼
 		float _moveSpeed = 600.0f;
 
 };

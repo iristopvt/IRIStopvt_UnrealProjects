@@ -32,11 +32,13 @@ void AMyAIController::OnPossess(APawn* InPawn)
 	// 타이머를 설정하여 일정 시간(3초)마다 함수호출 
 	//GetWorld()->GetTimerManager().SetTimer(_timerHandle, this, &AMyAIController::RandMove, 3.0f, true);
 	
-	UBlackboardComponent* temp = Blackboard;
-	if (UseBlackboard(_bb, temp))
+	UBlackboardComponent* blackBoarComponent = Blackboard;
+	if (UseBlackboard(_bb, blackBoarComponent))
 	{
 		if (RunBehaviorTree(_bt))
 		{
+			
+			blackBoarComponent->SetValueAsVector(FName(TEXT("FixedPos")), InPawn->GetActorLocation());
 			UE_LOG(LogTemp, Log, TEXT("Behavior Tree Succeeded"));
 		}
 	}

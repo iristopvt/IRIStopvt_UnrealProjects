@@ -4,6 +4,7 @@
 #include "MyGameInstance.h"
 
 #include "MyUIManager.h"
+#include "MyEffecManger.h"
 
 UMyGameInstance::UMyGameInstance()
 {
@@ -29,6 +30,9 @@ void UMyGameInstance::Init()
 	FActorSpawnParameters params;
 	params.Name = TEXT("UIManger");
 	_uiManger = GetWorld()->SpawnActor< AMyUIManager>(FVector::ZeroVector, FRotator::ZeroRotator, params);
+
+	params.Name = TEXT("EffectManger");
+	_effectManager = GetWorld()->SpawnActor< AMyEffecManger>(FVector::ZeroVector, FRotator::ZeroRotator, params);
 }
 
 FMystatData* UMyGameInstance::GetStatDataMyLevel(int level)

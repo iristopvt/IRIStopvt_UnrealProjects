@@ -22,15 +22,15 @@ public:
 
 	virtual void NativeUpdateAnimation(float DeltaSeconde) override;
 
-	void PlayAttackMontage();
+	virtual void PlayAttackMontage();
 	void PlayDeath();
 	void DelegateTest();
 	void DelegateTest2(int32 hp, int32 mp);
 
-	void JumpToSection(int32 sectionIndex);
+	virtual void JumpToSection(int32 sectionIndex) ;
 
 	UFUNCTION()
-	void AnimNotify_Attackhit();
+	virtual void AnimNotify_Attackhit();
 
 	AttackDelegate _attackDelegate;
 	DeathDelegate _deathDelegate;

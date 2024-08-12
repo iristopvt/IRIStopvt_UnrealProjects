@@ -9,6 +9,8 @@
 
 #include "MyAIController.h"
 #include "MyCharacter.h"
+#include "MyPlayer.h"
+
 UBT_Deco_CanAttack::UBT_Deco_CanAttack()
 {
 	NodeName = TEXT("CanAttack");
@@ -19,8 +21,8 @@ bool UBT_Deco_CanAttack::CalculateRawConditionValue(UBehaviorTreeComponent& Owne
 	bool result = Super::CalculateRawConditionValue(OwnerComp, NodeMemory);
 
 	auto currentPawn = OwnerComp.GetAIOwner()->GetPawn();
-	auto target = Cast<AMyCharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName(TEXT("Target"))));
-
+	auto target = Cast<AMyPlayer>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName(TEXT("Target"))));
+	// 기존 Cast <AMyCharacter>
 	if (currentPawn == nullptr || target == nullptr)
 		return false;
 

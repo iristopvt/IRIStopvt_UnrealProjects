@@ -62,8 +62,12 @@ void UMyStatComponent::SetHp(int32 hp)
 	// -> 이 함수가 호출 될때마다 hpbar가 바뀌면 되겟다.
 	//AddCurHp()
 	_curHp = hp;
-	if (_curHp < 0)
+	if (_curHp <= 0)
+	{
+		_deathDelegate.Broadcast();
+		_deathDelegate.Clear();
 		_curHp = 0;
+	}
 	if (_curHp > _maxHp)
 		_curHp = _maxHp;
 
