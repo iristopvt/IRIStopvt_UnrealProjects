@@ -12,6 +12,7 @@
       <Filter>Source</Filter>
     </None>
     <None Include="..\..\.vsconfig" />
+    <None Include="..\..\Standing Melee Attack Horizontal.fbx" />
     <Filter Include="Config">
       <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
     </Filter>
@@ -30,6 +31,12 @@
     <Filter Include="Source\CW_Projects0723">
       <UniqueIdentifier>{50E3D699-E3E0-34A5-AE8A-AFA009BD98AF}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\CW_Projects0723\BossMrAnimInstance.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\BossMrAnimInstance.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\Source\CW_Projects0723\BT_Deco_CanAttack.cpp">
       <Filter>Source\CW_Projects0723</Filter>
     </ClCompile>
@@ -81,6 +88,12 @@
     <ClInclude Include="..\..\Source\CW_Projects0723\MyAnimInstance.h">
       <Filter>Source\CW_Projects0723</Filter>
     </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyBossMonster.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyBossMonster.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\Source\CW_Projects0723\MyButton.cpp">
       <Filter>Source\CW_Projects0723</Filter>
     </ClCompile>
@@ -91,6 +104,12 @@
       <Filter>Source\CW_Projects0723</Filter>
     </ClCompile>
     <ClInclude Include="..\..\Source\CW_Projects0723\MyCharacter.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyEffecManger.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyEffecManger.h">
       <Filter>Source\CW_Projects0723</Filter>
     </ClInclude>
     <ClCompile Include="..\..\Source\CW_Projects0723\MyGameInstance.cpp">
@@ -129,16 +148,46 @@
     <ClInclude Include="..\..\Source\CW_Projects0723\MyItem.h">
       <Filter>Source\CW_Projects0723</Filter>
     </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyMonster.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyMonster.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyMonsterAnimInstance.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyMonsterAnimInstance.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\Source\CW_Projects0723\MyPawn.cpp">
       <Filter>Source\CW_Projects0723</Filter>
     </ClCompile>
     <ClInclude Include="..\..\Source\CW_Projects0723\MyPawn.h">
       <Filter>Source\CW_Projects0723</Filter>
     </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyPlayer.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyPlayer.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MyPlayerAnimInstance.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MyPlayerAnimInstance.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\Source\CW_Projects0723\MyPlayerController.cpp">
       <Filter>Source\CW_Projects0723</Filter>
     </ClCompile>
     <ClInclude Include="..\..\Source\CW_Projects0723\MyPlayerController.h">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\CW_Projects0723\MySoundManger.cpp">
+      <Filter>Source\CW_Projects0723</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CW_Projects0723\MySoundManger.h">
       <Filter>Source\CW_Projects0723</Filter>
     </ClInclude>
     <ClCompile Include="..\..\Source\CW_Projects0723\MyStatComponent.cpp">
